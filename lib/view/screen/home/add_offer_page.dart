@@ -57,6 +57,7 @@ class AddOfferPage extends GetView<AddOfferPageControllerImp> {
             SearchTextField(
               controller: controller.productTypeController,
               hint: "ItemType".tr,
+              isEdit: true,
               suffix: GetBuilder<AddOfferPageControllerImp>(
                 builder: (controller) {
                   return IconButton(
@@ -85,7 +86,7 @@ class AddOfferPage extends GetView<AddOfferPageControllerImp> {
                                   onTap: () =>
                                       controller.chooseUserJopType(index),
                                   title: TextCustom(
-                                    text: controller.jopTypeList[index],
+                                    text: controller.jopTypeList[index].name!,
                                   ),
                                 );
                               },
@@ -125,14 +126,14 @@ class AddOfferPage extends GetView<AddOfferPageControllerImp> {
                 return Wrap(
                   children: [
                     ...List.generate(
-                      controller.carImage!.length,
+                      controller.productsImage.length,
                       (index) {
                         return Container(
                           margin: EdgeInsets.all(Get.width / 30),
                           child: FileImageDesign(
                             height: Get.width / 6.262,
                             width: Get.width / 6.262,
-                            image: controller.carImage![index],
+                            image: controller.productsImage[index],
                           ),
                         );
                       },
@@ -169,7 +170,7 @@ class AddOfferPage extends GetView<AddOfferPageControllerImp> {
               height: heigth(100),
             ),
             SearchTextField(
-              controller: controller.itemDescriptionController,
+              controller: controller.priceController,
               hint: "Itemprice".tr,
             ),
             SizedBox(
@@ -183,16 +184,23 @@ class AddOfferPage extends GetView<AddOfferPageControllerImp> {
               height: heigth(100),
             ),
             SearchTextField(
-              controller: controller.itemDescriptionController,
+              controller: controller.addContactNumberController,
               hint: "AddContactNumber".tr,
             ),
             SizedBox(
               height: heigth(50),
             ),
-            ButtonCustom(
-              text: "PublishNow".tr,
-              onTap: () {},
-            ),
+            GetBuilder<AddOfferPageControllerImp>(builder: (controller) {
+              return ButtonCustom(
+                text: controller.subscribe ? "bay card" : "PublishNow".tr,
+                color: controller.subscribe
+                    ? AppColor.hintColor
+                    : AppColor.primaryColor,
+                onTap: () => controller.subscribe
+                    ? controller.subscribePage()
+                    : controller.addProducts(),
+              );
+            }),
             SizedBox(
               height: heigth(50),
             ),

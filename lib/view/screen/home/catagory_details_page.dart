@@ -54,13 +54,26 @@ class CatagoryDetailsPage extends GetView<CategoryDetailsPageControllerImp> {
             SizedBox(
               height: width(40),
             ),
-            const ProductsCardDetails(
-              description:
-                  "قميص نصف كم متواجد الالوان الازرق والاسود فقط والنمر من 20 الى 24",
-              location: "مكة , شارع عمر المختار ",
-              title: "قميص نصف كم",
-              price: "30",
-            ),
+            GetBuilder<CategoryDetailsPageControllerImp>(
+              builder: (controller) {
+                return Column(
+                  children: [
+                    ...List.generate(
+                      controller.products.length,
+                      (index) {
+                        return ProductsCardDetails(
+                          description: controller.products[index].description!,
+                          location: controller.products[index].place!,
+                          title: controller.products[index].name!,
+                          imageUrl: controller.products[index].coverImageUrl!,
+                          price: "${controller.products[index].price!}",
+                        );
+                      },
+                    )
+                  ],
+                );
+              },
+            )
           ],
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waferna/core/constant/app_font_size.dart';
 
+import '../../../core/function/height.dart';
 import 'text_custom.dart';
 import 'text_form_custom_without_label.dart';
 
@@ -12,6 +13,7 @@ class TextFormWithLabel extends StatelessWidget {
   final Widget? suffix;
   final void Function(String)? onChanged;
   final bool isPassword;
+  final bool? readOnly;
   const TextFormWithLabel({
     super.key,
     required this.label,
@@ -21,6 +23,7 @@ class TextFormWithLabel extends StatelessWidget {
     this.suffix,
     this.onChanged,
     this.isPassword = false,
+    this.readOnly = false,
   });
 
   @override
@@ -28,13 +31,11 @@ class TextFormWithLabel extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
+      spacing: heigth(90),
       children: [
         TextCustom(
           text: "${label.tr} : ",
           textSize: AppFontSize.size18,
-        ),
-        SizedBox(
-          height: Get.height / 90,
         ),
         TextFormCustom(
           hint: hint,
@@ -43,6 +44,7 @@ class TextFormWithLabel extends StatelessWidget {
           suffix: suffix,
           onChanged: onChanged,
           isPassword: isPassword,
+          readOnly: readOnly,
         ),
       ],
     );

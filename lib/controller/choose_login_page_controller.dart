@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:waferna/core/constant/app_routes.dart';
+import 'package:waferna/services/my_service.dart';
 
 abstract class ChooseLoginPageController extends GetxController {
   createAccount();
@@ -8,9 +9,15 @@ abstract class ChooseLoginPageController extends GetxController {
 }
 
 class ChooseLoginPageControllerImp extends ChooseLoginPageController {
+  MyServices myServices = Get.find();
   @override
   createAccount() {
-    Get.offAllNamed(AppRoutes.signUpPage);
+    Get.offAllNamed(
+      AppRoutes.signUpPage,
+      arguments: {
+        "data": "",
+      },
+    );
   }
 
   @override
@@ -21,5 +28,9 @@ class ChooseLoginPageControllerImp extends ChooseLoginPageController {
   @override
   vistor() {
     Get.offAllNamed(AppRoutes.navHomePgae);
+    myServices.sharedPreferences.setString(
+      "userType",
+      "2",
+    );
   }
 }

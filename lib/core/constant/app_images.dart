@@ -9,4 +9,9 @@ class AppImages {
   static const String dealerImage = "$route/Dealer.png";
   static const String hiImage = "$route/hiImage.png";
   static const String tImage = "$route/t.png";
+  static const String resetPasswordOne = "$route/reset_password_one.png";
+  static const String resetPasswordVerify = "$route/reset_password_verify.png";
+  static const String resetPassword = "$route/reset_password.png";
+  static const String successPassword = "$route/Success.png";
+  static const String languageImage = "$route/language.png";
 }

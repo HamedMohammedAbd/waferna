@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:waferna/controller/home_controller/nav_home_controller.dart';
 import 'package:waferna/view/widgets/gloable_widget/back_icon_button.dart';
 
 import '../../../core/constant/app_color.dart';
@@ -17,7 +15,6 @@ AppBar homeAppBar({
   double? widthMargin,
   void Function()? onTap,
 }) {
-  NavHomeControllerImp controller = Get.put(NavHomeControllerImp());
   return AppBar(
     elevation: 0,
     backgroundColor: AppColor.scaffoldColor,
@@ -27,7 +24,7 @@ AppBar homeAppBar({
     ),
     leading: isSetting
         ? IconButton(
-            onPressed: () => controller.showSettings(),
+            onPressed: onTap,
             icon: const Icon(
               Icons.settings_outlined,
               color: AppColor.primaryColor,

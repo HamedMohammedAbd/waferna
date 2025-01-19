@@ -38,18 +38,27 @@ dependencies:
   shared_preferences:
   get:
   http:
+  flutter_otp_text_field:
+  image_picker:
   dartz:
   flutter_native_splash:
-  image_picker:
+  timeago: ^3.7.0
+  flutter_svg: ^2.0.16
+  url_launcher: ^6.3.1
+  path: ^1.9.0
+  cached_network_image: ^3.4.1
+
 flutter_native_splash:
   # color: "#000000"
   android: true
   ios: true
-  background_image: "assets/images/seplash.png"
-  image_android: assets/images/seplash.png
-  image_ios: assets/images/seplash.png
-  android_gravity: "fill"
-  ios_content_mode: "scaleToFill"
+  background_image: assets/images/splash.png
+  image_android: assets/images/splash.png
+  image_ios: assets/images/splash.png
+  android_gravity: center
+  ios_content_mode: center
+  fullscreen: true
+
 
 dev_dependencies:
   flutter_test:

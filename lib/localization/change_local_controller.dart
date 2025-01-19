@@ -1,13 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import '../core/constant/app_routes.dart';
 import '../services/my_service.dart';
 
 class ChangeLocaleController extends GetxController {
   Locale? language;
   MyServices myServicesController = Get.find();
-  String? isChoosen;
   void changeLanguage(String languageCode) {
     Locale locale = Locale(languageCode);
     myServicesController.sharedPreferences.setString('language', languageCode);
@@ -33,9 +31,8 @@ class ChangeLocaleController extends GetxController {
     super.onInit();
   }
 
-  changeLanguageUser(String value, String languageCode) {
-    isChoosen = value;
+  changeLanguageUser(String languageCode) {
     changeLanguage(languageCode);
-    Get.toNamed(AppRoutes.onBoarding);
+    update();
   }
 }

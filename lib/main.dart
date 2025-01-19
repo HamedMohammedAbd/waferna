@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:waferna/core/class/curd.dart';
 import 'package:waferna/route.dart';
 import 'binding/my_binding.dart';
 import 'core/constant/app_color.dart';
@@ -10,6 +11,8 @@ import 'services/my_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initialServices();
+  Get.put(ChangeLocaleController());
+  print(myServices.sharedPreferences.getString("token"));
   runApp(const MyApp());
 }
 
@@ -24,6 +27,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Wafarna',
       debugShowCheckedModeBanner: false,
+
       initialBinding: MyBinding(),
       locale: changeLocaleController.language,
       translations: MyTranslation(),

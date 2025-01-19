@@ -7,20 +7,29 @@ import '../../../core/constant/app_font_size.dart';
 class SearchTextField extends StatelessWidget {
   final TextEditingController controller;
   final String? hint;
+  final bool? focus, isEdit;
   final Widget? suffix;
+  final void Function(String)? onChanged;
   const SearchTextField({
     super.key,
     required this.controller,
     this.hint,
     this.suffix,
+    this.onChanged,
+    this.focus,
+    this.isEdit,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      onChanged: onChanged,
+      cursorColor: AppColor.primaryColor,
+      showCursor: focus,
+      readOnly: isEdit ?? false,
       decoration: InputDecoration(
-        suffixIcon: suffix,
+        suffix: suffix,
         filled: true,
         fillColor: AppColor.fillColor1,
         hintText: hint ?? "search".tr,

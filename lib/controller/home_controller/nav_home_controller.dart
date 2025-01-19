@@ -1,47 +1,75 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:waferna/core/constant/app_color.dart';
 import 'package:waferna/core/constant/app_routes.dart';
-import 'package:waferna/core/function/height.dart';
-import 'package:waferna/core/function/width.dart';
-import 'package:waferna/view/widgets/gloable_widget/text_custom.dart';
+import 'package:waferna/core/function/storage_user_data.dart';
 
-import '../../view/widgets/home_widget/settings_buttons_widget.dart';
+import 'package:waferna/services/my_service.dart';
+
+import '../../core/function/logout.dart';
 
 abstract class NavHomeController extends GetxController {
   changeCurrentIndex(int index);
-  showSettings();
+
   goToWaitingList();
   goToNotificationPage();
+  changeLanguagePage();
 }
 
 class NavHomeControllerImp extends NavHomeController {
   int currentIndex = 0;
   List<Map<String, dynamic>> settingData = [];
+  MyServices myServices = Get.find();
+  String title = "Settings", close = "close";
   @override
   void onInit() {
-    settingData.addAll([
-      {
-        "name": "notification",
-        "onTap": () {
-          goToNotificationPage();
-        },
-      },
-      {
-        "name": "theme",
-        "onTap": () {},
-      },
-      {
-        "name": "logout",
-        "onTap": () {},
-      },
-      {
-        "name": "waitList",
-        "onTap": () {
-          goToWaitingList();
-        },
-      },
-    ]);
+    settingData.addAll(dataStorage().userType != "customer"
+        ? [
+            {
+              "name": "notification",
+              "onTap": () {
+                goToNotificationPage();
+              },
+            },
+            {
+              "name": "changeLanguage",
+              "onTap": () {
+                changeLanguagePage();
+              },
+            },
+            {
+              "name": "logout",
+              "onTap": () {
+                logout();
+              },
+            },
+            {
+              "name": "waitList",
+              "onTap": () {
+                goToWaitingList();
+              },
+            },
+          ]
+        : [
+            {
+              "name": "notification",
+              "onTap": () {
+                goToNotificationPage();
+              },
+            },
+            {
+              "name": "changeLanguage",
+              "onTap": () {
+                changeLanguagePage();
+              },
+            },
+            {
+              "name": "logout",
+              "onTap": () {
+                logout();
+              },
+            },
+          ]);
+    // title = "Settings";
+    // close = "close";
     super.onInit();
   }
 
@@ -52,54 +80,6 @@ class NavHomeControllerImp extends NavHomeController {
   }
 
   @override
-  showSettings() {
-    Get.defaultDialog(
-      title: "Settings".tr,
-      content: Column(
-        children: [
-          Container(
-            height: 2,
-            color: AppColor.blackColor,
-            width: width(1),
-            margin: EdgeInsets.symmetric(
-              horizontal: width(
-                20,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: heigth(15),
-          ),
-          ...List.generate(
-            settingData.length,
-            (index) {
-              String name = settingData[index]["name"];
-              return SettingsButtonsWidget(
-                buttonName: name,
-                onTap: settingData[index]["onTap"],
-              );
-            },
-          ),
-          SizedBox(
-            height: heigth(80),
-          ),
-          Row(
-            children: [
-              TextButton(
-                onPressed: () => Get.back(),
-                child: TextCustom(
-                  text: "close".tr,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
   goToWaitingList() {
     Get.toNamed(AppRoutes.waitingListPage);
   }
@@ -107,5 +87,10 @@ class NavHomeControllerImp extends NavHomeController {
   @override
   goToNotificationPage() {
     Get.toNamed(AppRoutes.notificationPage);
+  }
+
+  @override
+  changeLanguagePage() {
+    Get.toNamed(AppRoutes.changeLanguagePage);
   }
 }

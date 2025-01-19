@@ -1,22 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/constant/app_color.dart';
 import '../../../core/constant/app_font_size.dart';
-import '../../../core/constant/app_images.dart';
 import '../../../core/function/height.dart';
 import '../../../core/function/width.dart';
 import '../gloable_widget/button_custom.dart';
 import '../gloable_widget/text_custom.dart';
 
 class ProductsCardDetails extends StatelessWidget {
-  final String title, description, location, price;
+  final String title, description, location, price, imageUrl;
   const ProductsCardDetails({
     super.key,
     required this.title,
     required this.description,
     required this.location,
     required this.price,
+    required this.imageUrl,
   });
 
   @override
@@ -69,8 +70,8 @@ class ProductsCardDetails extends StatelessWidget {
                 flex: 1,
                 child: Column(
                   children: [
-                    Image.asset(
-                      AppImages.tImage,
+                    CachedNetworkImage(
+                      imageUrl: imageUrl,
                     ),
                     FittedBox(
                       child: TextCustom(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:waferna/core/class/status_request.dart';
 import 'package:waferna/view/widgets/gloable_widget/button_custom.dart';
 
 import '../../../controller/home_controller/waiting_order_page_controller.dart';
@@ -54,6 +55,7 @@ class WaitingOrderPage extends GetView<WaitingOrderPageControllerImp> {
             ),
             SearchTextField(
               controller: controller.productTypeController,
+              isEdit: true,
               hint: "ItemType".tr,
               suffix: GetBuilder<WaitingOrderPageControllerImp>(
                 builder: (controller) {
@@ -83,7 +85,7 @@ class WaitingOrderPage extends GetView<WaitingOrderPageControllerImp> {
                                   onTap: () =>
                                       controller.chooseUserJopType(index),
                                   title: TextCustom(
-                                    text: controller.jopTypeList[index],
+                                    text: controller.jopTypeList[index].name!,
                                   ),
                                 );
                               },
@@ -136,10 +138,20 @@ class WaitingOrderPage extends GetView<WaitingOrderPageControllerImp> {
               height: heigth(20),
             ),
             Center(
-              child: ButtonCustom(
-                text: "SubmitRequest".tr,
-                width: width(1.524),
-                onTap: () => controller.addWaitingOrder(),
+              child: GetBuilder<WaitingOrderPageControllerImp>(
+                builder: (controller) {
+                  return ButtonCustom(
+                    text: "SubmitRequest".tr,
+                    width: width(1.524),
+                    color: controller.statusRequest2 == StatusRequest.loading
+                        ? AppColor.hintColor
+                        : AppColor.primaryColor,
+                    onTap: () =>
+                        controller.statusRequest2 == StatusRequest.loading
+                            ? null
+                            : controller.addWaitingOrder(),
+                  );
+                },
               ),
             )
           ],

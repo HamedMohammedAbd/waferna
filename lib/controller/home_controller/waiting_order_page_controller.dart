@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/class/status_request.dart';
+import '../../core/constant/app_api.dart';
+import '../../core/function/handling_data.dart';
+import '../../data/data_source/remote/get_data.dart';
+import '../../data/model/category_model.dart';
+import '../../services/my_service.dart';
+
 abstract class WaitingOrderPageController extends GetxController {
   chooseUserJopType(int index);
   isJopType();
   addDay();
   removeDay();
   addWaitingOrder();
+  getCategoryData();
 }
 
 class WaitingOrderPageControllerImp extends WaitingOrderPageController {
@@ -15,24 +23,17 @@ class WaitingOrderPageControllerImp extends WaitingOrderPageController {
   bool isType = false;
   int? userJopType;
   int dayWait = 1;
-  List<String> jopTypeList = [
-    "ملابس",
-    "ملابس",
-    "ملابس",
-    "ملابس",
-    "ملابس",
-    "ملابس",
-    "ملابس",
-    "ملابس",
-    "ملابس",
-    "ملابس",
-    "ملابس",
-    "ملابس",
-  ];
+  String categoryId = "";
+  GetData addWaitingProduct = GetData(Get.find());
+  late StatusRequest statusRequest;
+  late StatusRequest statusRequest2 = StatusRequest.none;
+  MyServices myServices = Get.find();
+  List<CategoryModel> jopTypeList = [];
   @override
-  void onInit() {
+  void onInit() async {
     productNameController = TextEditingController();
     productTypeController = TextEditingController();
+    await getCategoryData();
     super.onInit();
   }
 
@@ -52,7 +53,8 @@ class WaitingOrderPageControllerImp extends WaitingOrderPageController {
   @override
   chooseUserJopType(int index) {
     userJopType = index;
-    productTypeController.text = jopTypeList[index];
+    productTypeController.text = jopTypeList[index].name!;
+    categoryId = jopTypeList[index].id.toString();
     isJopType();
   }
 
@@ -68,8 +70,8 @@ class WaitingOrderPageControllerImp extends WaitingOrderPageController {
       dayWait--;
     } else {
       Get.snackbar(
-        "Error",
-        "Can't day be less than one day",
+        "Error".tr,
+        "message".tr,
       );
     }
 
@@ -77,5 +79,64 @@ class WaitingOrderPageControllerImp extends WaitingOrderPageController {
   }
 
   @override
-  addWaitingOrder() {}
+  addWaitingOrder() async {
+    print(myServices.sharedPreferences.getString("token"));
+
+    statusRequest2 = StatusRequest.loading;
+
+    update();
+    var response2 = await addWaitingProduct.getData(
+      map: {
+        "name": productNameController.text,
+        "description": "value",
+        "category_id": categoryId,
+        "day_count": dayWait.toString(),
+      },
+      api: AppApi.waitingListAPI,
+    );
+    statusRequest2 = handlingData(response2);
+    print(categoryId);
+    print(productNameController.text);
+    print(dayWait.toString());
+
+    if (statusRequest2 == StatusRequest.success) {
+      Get.snackbar("", "${response2["data"]["message"]}");
+      productNameController.clear();
+      productTypeController.clear();
+
+      print(response2["data"]["message"]);
+    } else {
+      print("$statusRequest2" "==============");
+      print("error ===============");
+    }
+
+    update();
+  }
+
+  @override
+  getCategoryData() async {
+    statusRequest = StatusRequest.loading;
+    var response = await addWaitingProduct.getData(
+      map: {},
+      api: AppApi.getCategoryData,
+      reqType: false,
+    );
+    statusRequest = handlingData(response);
+
+    if (statusRequest == StatusRequest.success) {
+      List data = response["data"];
+
+      jopTypeList.addAll(
+        data.map(
+          (e) {
+            return CategoryModel.fromJson(e);
+          },
+        ),
+      );
+    } else {
+      print("error ===============");
+    }
+
+    update();
+  }
 }

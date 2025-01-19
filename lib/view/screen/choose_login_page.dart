@@ -86,7 +86,7 @@ class ChooseLoginPage extends StatelessWidget {
                       width: width(3.5),
                       child: ButtonCustom(
                         height: heigth(29.3572),
-                        color: AppColor.whiteColor.withOpacity(0.4),
+                        color: AppColor.whiteColor.withAlpha(102),
                         text: "vist".tr,
                         textColor: AppColor.whiteColor,
                         textSize: AppFontSize.size15,

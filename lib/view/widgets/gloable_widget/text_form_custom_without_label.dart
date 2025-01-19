@@ -10,6 +10,7 @@ class TextFormCustom extends StatelessWidget {
   final String? Function(String? value)? validation;
   final Widget? suffix;
   final void Function(String)? onChanged;
+  final bool? readOnly;
 
   const TextFormCustom({
     super.key,
@@ -19,6 +20,7 @@ class TextFormCustom extends StatelessWidget {
     required this.validation,
     this.suffix,
     this.onChanged,
+    this.readOnly = false,
   });
 
   @override
@@ -29,6 +31,7 @@ class TextFormCustom extends StatelessWidget {
       validator: validation,
       cursorColor: AppColor.primaryColor,
       obscureText: isPassword,
+      readOnly: readOnly!,
       decoration: InputDecoration(
         focusColor: AppColor.primaryColor,
         border: OutlineInputBorder(

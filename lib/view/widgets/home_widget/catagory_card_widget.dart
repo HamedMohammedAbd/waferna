@@ -1,4 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:waferna/localization/change_local_controller.dart';
+import 'package:waferna/services/my_service.dart';
 
 import '../../../core/constant/app_color.dart';
 import '../../../core/constant/app_font_size.dart';
@@ -10,15 +14,18 @@ import '../gloable_widget/text_custom.dart';
 class CatagoryCardWidget extends StatelessWidget {
   final String name;
   final void Function()? onTap;
+  final List<String> images;
   const CatagoryCardWidget({
     super.key,
     required this.name,
     this.onTap,
+    required this.images,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: AppColor.scaffoldColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
@@ -41,20 +48,19 @@ class CatagoryCardWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Expanded(
-                      child: Image.asset(
-                        AppImages.dealerImage,
-                      ),
-                    ),
-                    Expanded(
-                      child: Image.asset(
-                        AppImages.dealerImage,
-                      ),
-                    ),
-                    Expanded(
-                      child: Image.asset(
-                        AppImages.dealerImage,
-                      ),
+                    ...List.generate(
+                      images.isEmpty ? 3 : images.length,
+                      (index) {
+                        return Expanded(
+                          child: images.isEmpty
+                              ? Image.asset(
+                                  AppImages.logoImage,
+                                )
+                              : CachedNetworkImage(
+                                  imageUrl: images[index],
+                                ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -69,17 +75,20 @@ class CatagoryCardWidget extends StatelessWidget {
                       alignment: Alignment.center,
                       width: width(4.17183),
                       height: 33,
+                      padding: const EdgeInsets.all(7),
                       decoration: const BoxDecoration(
                         color: AppColor.primaryColor,
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(5),
                         ),
                       ),
-                      child: TextCustom(
-                        text: name,
-                        textColor: AppColor.whiteColor,
-                        textSize: AppFontSize.size15,
-                        fontWeight: FontWeight.w400,
+                      child: FittedBox(
+                        child: TextCustom(
+                          text: name,
+                          textColor: AppColor.whiteColor,
+                          textSize: AppFontSize.size15,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                     CustomPaint(
@@ -101,6 +110,8 @@ class CatagoryCardWidget extends StatelessWidget {
 }
 
 class RedTrianglePainter extends CustomPainter {
+  MyServices myServices = Get.find();
+  ChangeLocaleController localController = Get.put(ChangeLocaleController());
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
@@ -110,7 +121,10 @@ class RedTrianglePainter extends CustomPainter {
     Path path = Path();
 
     path.moveTo(-size.width, 0);
-    path.lineTo(size.width, size.height);
+    path.lineTo(
+      localController.language == const Locale("ar") ? size.width : 0,
+      size.height,
+    );
     path.lineTo(size.width, 0);
     path.close();
 
